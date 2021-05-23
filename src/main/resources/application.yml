@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: prod
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:test
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jackson:
+    default-property-inclusion: non_null
+logging:
+  level:
+    root: info
+    com.leaderboard.mapper: debug
+
+mybatis:
+  type-aliases-package: com.leaderboard.entity
