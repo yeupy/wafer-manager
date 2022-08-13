@@ -15,7 +15,7 @@ spring:
 logging:
   level:
     root: info
-    com.leaderboard.mapper: debug
+    com.wafermanager.mapper: debug
 
 mybatis:
-  type-aliases-package: com.leaderboard.entity
+  type-aliases-package: com.wafermanager.entity
