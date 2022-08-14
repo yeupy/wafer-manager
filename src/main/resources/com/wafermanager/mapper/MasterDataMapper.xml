@@ -16,6 +16,18 @@
         WHERE uid = #{uid}
     </select>
 
+    <update id="update" parameterType="master">
+        UPDATE master
+        <set>
+            <if test="columnA != null">column_a = #{columnA},</if>
+            <if test="columnB != null">column_b = #{columnB},</if>
+            <if test="columnC != null">column_c = #{columnC},</if>
+            <if test="columnD != null">column_d = #{columnD},</if>
+            <if test="modifiedDate != null">modified_date = #{modifiedDate}</if>
+        </set>
+        WHERE uid = #{uid}
+    </update>
+
     <select id="list" resultType="master">
         SELECT *
         FROM master

@@ -23,6 +23,10 @@ public class MasterDataService {
         return masters.read(uid);
     }
 
+    public int update(MasterData masterData) {
+        return masters.update(masterData);
+    }
+
     public List<MasterData> list(int size, int page) {
         return masters.list(size, page);
     }

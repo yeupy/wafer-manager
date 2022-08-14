@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -63,9 +64,46 @@ class MasterDataControllerTest extends AbstractControllerTest {
         MvcResult result = mockMvc.perform(get("/master")
                     .param("size","3")
                     .param("page","0"))
-                .andExpect(status().isOk()).andReturn() ;
+                .andExpect(status().isOk()).andReturn();
 
         masterDataList = convert(result, new TypeReference<List<MasterData>>() {});
+        assertEquals(3, masterDataList.size());
+        for (int i = 0, j = 0, l = i + masterDataList.size(); i < l; i++, j++) {
+            assertEquals(reversed[i], masterDataList.get(j));
+        }
+
+        result = mockMvc.perform(get("/master")
+                        .param("size","3")
+                        .param("page","1"))
+                .andExpect(status().isOk()).andReturn();
+
+        masterDataList = convert(result, new TypeReference<List<MasterData>>() {});
+        assertEquals(3, masterDataList.size());
+        for (int i = 3, j = 0, l = i + masterDataList.size(); i < l; i++, j++) {
+            assertEquals(reversed[i], masterDataList.get(j));
+        }
+
+        result = mockMvc.perform(get("/master")
+                        .param("size","3")
+                        .param("page","2"))
+                .andExpect(status().isOk()).andReturn();
+
+        masterDataList = convert(result, new TypeReference<List<MasterData>>() {});
+        assertEquals(3, masterDataList.size());
+        for (int i = 6, j = 0, l = i + masterDataList.size(); i < l; i++, j++) {
+            assertEquals(reversed[i], masterDataList.get(j));
+        }
+
+        result = mockMvc.perform(get("/master")
+                        .param("size","3")
+                        .param("page","3"))
+                .andExpect(status().isOk()).andReturn();
+
+        masterDataList = convert(result, new TypeReference<List<MasterData>>() {});
+        assertEquals(1, masterDataList.size());
+        for (int i = 9, j = 0, l = i + masterDataList.size(); i < l; i++, j++) {
+            assertEquals(reversed[i], masterDataList.get(j));
+        }
     }
 
     static <T> T convert(MvcResult result, TypeReference typeReference) throws Exception {

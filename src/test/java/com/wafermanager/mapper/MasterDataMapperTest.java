@@ -53,6 +53,13 @@ class MasterDataMapperTest extends AbstractTest {
     }
 
     @Test
+    void update() {
+        masterDataArr[0].setColumnA(-1);
+        assertEquals(1, masters.update(masterDataArr[0]));
+        assertEquals(masterDataArr[0], masters.read(masterDataArr[0].getUid()));
+    }
+
+    @Test
     void list() {
         List<MasterData> masterDataList = null;
 

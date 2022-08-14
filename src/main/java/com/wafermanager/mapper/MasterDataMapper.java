@@ -13,6 +13,8 @@ public interface MasterDataMapper {
 
     MasterData read(String uid);
 
+    int update(MasterData masterData);
+
     @Delete("DELETE FROM master")
     int deleteAll();
 
