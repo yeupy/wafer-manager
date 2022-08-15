@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -21,7 +22,18 @@ public class MasterDataController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MasterData>> list(@RequestParam("size") int size, @RequestParam("page") int page) {
-        return ResponseEntity.ok(masterDataService.list(size, page));
+    public ResponseEntity<List<MasterData>> list(@RequestParam(value = "uid", required = false) String uid, @RequestParam("size") int size, @RequestParam("page") int page) {
+        return ResponseEntity.ok(masterDataService.list(uid, size, page));
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> count(@RequestParam(value = "uid", required = false) String uid) {
+        return ResponseEntity.ok(masterDataService.count(uid));
+    }
+
+    @GetMapping("/sample")
+    public ResponseEntity<?> sample() throws IOException {
+        masterDataService.sample();
+        return ResponseEntity.ok("CREATED");
     }
 }

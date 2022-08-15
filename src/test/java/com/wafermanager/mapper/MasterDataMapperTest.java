@@ -2,6 +2,7 @@ package com.wafermanager.mapper;
 
 import com.wafermanager.AbstractTest;
 import com.wafermanager.entity.MasterData;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,11 +29,18 @@ class MasterDataMapperTest extends AbstractTest {
 
     @BeforeEach
     void beforeEach() {
-        masters.deleteAll();
         for (int i = 0, l = masterDataArr.length; i < l; i++) {
             masterDataArr[i] = new MasterData(String.valueOf(i), i, i, i, String.valueOf(i), LocalDateTime.now());
             masters.create(masterDataArr[i]);
         }
+    }
+
+    @AfterEach
+    void afterEach() {
+        for (int i = 0, l = masterDataArr.length; i < l; i++) {
+            masters.delete(masterDataArr[i].getUid());
+        }
+        masters.delete("-1");
     }
 
     @Test
@@ -61,35 +69,35 @@ class MasterDataMapperTest extends AbstractTest {
 
     @Test
     void list() {
-        List<MasterData> masterDataList = null;
+        List<MasterData> retrieved = null;
 
-        MasterData[] reversed = (MasterData[]) Arrays.stream(masterDataArr)
-                .sorted(Comparator.comparing(MasterData::getModifiedDate).reversed()
-                .thenComparing(MasterData::getUid))
-                .toArray(MasterData[]::new);
+        retrieved = masters.list("0",3, 0);
+        assertEquals(1, retrieved.size());
+        assertEquals(masterDataArr[0], retrieved.get(0));
 
-        masterDataList = masters.list(3, 0);
-        assertEquals(3, masterDataList.size());
-        for (int i = 0, j = 0, l = i + masterDataList.size(); i < l; i++, j++) {
-            assertEquals(reversed[i], masterDataList.get(j));
-        }
+        List<MasterData> masterDataList = Arrays.stream(masterDataArr).collect(Collectors.toList());
+        List<MasterData> _masterDataList = masterDataList;
 
-        masterDataList = masters.list(3, 1);
-        assertEquals(3, masterDataList.size());
-        for (int i = 3, j = 0, l = i + masterDataList.size(); i < l; i++, j++) {
-            assertEquals(reversed[i], masterDataList.get(j));
-        }
+        retrieved = masters.list(null,3, 0);
+        assertEquals(3, retrieved.size());
+        retrieved.forEach(e -> assertTrue(_masterDataList.contains(e)));
 
-        masterDataList = masters.list(3, 2);
-        assertEquals(3, masterDataList.size());
-        for (int i = 6, j = 0, l = i + masterDataList.size(); i < l; i++, j++) {
-            assertEquals(reversed[i], masterDataList.get(j));
-        }
+        retrieved = masters.list(null,3, 1);
+        assertEquals(3, retrieved.size());
+        retrieved.forEach(e -> assertTrue(_masterDataList.contains(e)));
 
-        masterDataList = masters.list(3, 3);
-        assertEquals(1, masterDataList.size());
-        for (int i = 9, j = 0, l = i + masterDataList.size(); i < l; i++, j++) {
-            assertEquals(reversed[i], masterDataList.get(j));
-        }
+        retrieved = masters.list(null,3, 2);
+        assertEquals(3, retrieved.size());
+        retrieved.forEach(e -> assertTrue(_masterDataList.contains(e)));
+
+        retrieved = masters.list(null,3, 3);
+        assertEquals(1, retrieved.size());
+        retrieved.forEach(e -> assertTrue(_masterDataList.contains(e)));
+    }
+
+    @Test
+    void count() {
+        assertEquals(10, masters.count(null));
+        assertEquals(1, masters.count("0"));
     }
 }

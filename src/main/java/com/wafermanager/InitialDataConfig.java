@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 @Configuration
 @Slf4j
-@Profile("!test")
+@Profile("init")
 @RequiredArgsConstructor
 public class InitialDataConfig implements CommandLineRunner {
 

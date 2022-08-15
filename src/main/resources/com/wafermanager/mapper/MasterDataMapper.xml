@@ -31,8 +31,19 @@
     <select id="list" resultType="master">
         SELECT *
         FROM master
-        ORDER BY modified_date DESC, uid
+        <where>
+            <if test="uid != null and uid != ''">uid like concat(#{uid},'%')</if>
+        </where>
+        ORDER BY modified_date DESC
         LIMIT #{size} OFFSET ${size * page}
+    </select>
+
+    <select id="count" resultType="_long">
+        SELECT Count(uid)
+        FROM master
+        <where>
+            <if test="uid != null and uid != ''">uid like concat(#{uid},'%')</if>
+        </where>
     </select>
 
 </mapper>

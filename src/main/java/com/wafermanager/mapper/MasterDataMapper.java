@@ -18,6 +18,11 @@ public interface MasterDataMapper {
     @Delete("DELETE FROM master")
     int deleteAll();
 
-    List<MasterData> list(int size, int page);
+    @Delete("DELETE FROM master where uid = #{uid}")
+    int delete(String uid);
+
+    List<MasterData> list(String uid, int size, int page);
+
+    long count(String uid);
 
 }
