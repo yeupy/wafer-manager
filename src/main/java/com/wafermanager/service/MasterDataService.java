@@ -38,6 +38,11 @@ public class MasterDataService {
         return masters.update(masterData);
     }
 
+    @Transactional
+    public int delete(String uid) {
+        return masters.delete(uid);
+    }
+
     public List<MasterData> list(String uid, int size, int page) {
         return masters.list(uid, size, page);
     }
