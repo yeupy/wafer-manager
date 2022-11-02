@@ -28,6 +28,16 @@
         WHERE uid = #{uid}
     </update>
 
+    <delete id="deleteList" parameterType="list">
+        DELETE from master
+        <where>
+            <foreach item="item" index="index" collection="list"
+                     open="UID in (" separator="," close=")" nullable="true">
+                #{item}
+            </foreach>
+        </where>
+    </delete>
+
     <select id="list" resultType="master">
         SELECT *
         FROM master

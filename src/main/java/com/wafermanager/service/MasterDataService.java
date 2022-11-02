@@ -4,18 +4,15 @@ import com.wafermanager.entity.MasterData;
 import com.wafermanager.mapper.MasterDataMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.time.ZoneId;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 @Slf4j
 @Service
@@ -35,12 +32,18 @@ public class MasterDataService {
 
     @Transactional
     public int update(MasterData masterData) {
+        masterData.setModifiedDate(LocalDateTime.now(ZoneId.of("UTC")));
         return masters.update(masterData);
     }
 
     @Transactional
     public int delete(String uid) {
         return masters.delete(uid);
+    }
+
+    @Transactional
+    public int deleteList(List<String> uids) {
+        return masters.deleteList(uids);
     }
 
     public List<MasterData> list(String uid, int size, int page) {
@@ -51,9 +54,21 @@ public class MasterDataService {
         return masters.count(uid);
     }
 
-    public void sample() throws IOException {
+    private String randomUid(int size) {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        int length = chars.length();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0, l = size; i < l; i++) {
+            sb.append(chars.charAt(Double.valueOf(Math.floor(Math.random() * length)).intValue()));
+        }
+        return sb.toString();
+    }
+
+    public void sample(int size) throws IOException {
         masters.deleteAll();
-        int result = 0;
+        HashSet<String> uids = new HashSet<>();
+
+        /*int result = 0;
         Path path = Paths.get("./initMasterData.csv");
         if(!Files.exists(path)) {
             path = Paths.get(new ClassPathResource("initMasterData.csv").getURI());
@@ -70,6 +85,23 @@ public class MasterDataService {
 
             result += masters.create(_masterData);
             line = reader.readLine();
+        }*/
+        for (int i = 0, l = size; i < l; i++) {
+            String uid = randomUid(4);
+            uids.add(uid);
+            while (!uids.contains(uid)) {
+                uid = randomUid(4);
+            }
+
+            int a = Double.valueOf(Math.floor(Math.random() * ((i * 0.8) - i)) + i).intValue();
+            int b = Double.valueOf(Math.floor(Math.random() * ((i * 0.5) - i)) + i).intValue();
+            int c = Double.valueOf(Math.floor(Math.random() * 500)).intValue();
+            String d = randomUid(2);
+            LocalDateTime modifiedDate = LocalDateTime.now(ZoneId.of("UTC"));
+
+            MasterData _masterData = new MasterData(uid, a, b, c, d, modifiedDate);
+            masters.create(_masterData);
+            log.info(_masterData.toString());
         }
     }
 }

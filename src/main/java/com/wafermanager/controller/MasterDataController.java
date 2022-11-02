@@ -58,6 +58,12 @@ public class MasterDataController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    @DeleteMapping()
+    public ResponseEntity<?> deleteList(@RequestBody List<String> uids) {
+        masterDataService.deleteList(uids);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<MasterData>> list(@RequestParam(value = "uid", required = false) String uid, @RequestParam("size") int size, @RequestParam("page") int page) {
         return ResponseEntity.ok(masterDataService.list(uid, size, page));
@@ -69,8 +75,8 @@ public class MasterDataController {
     }
 
     @GetMapping("/sample")
-    public ResponseEntity<?> sample() throws IOException {
-        masterDataService.sample();
+    public ResponseEntity<?> sample(@RequestParam("size") int size) throws IOException {
+        masterDataService.sample(size);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 }
