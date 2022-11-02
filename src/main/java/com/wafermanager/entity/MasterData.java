@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @Alias("master")
@@ -34,6 +37,7 @@ public class MasterData {
         this.columnB = columnB;
         this.columnC = columnC;
         this.columnD = columnD;
-        this.modifiedDate = LocalDateTime.parse(modifiedDate);
+//        this.modifiedDate = LocalDateTime.parse(modifiedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.modifiedDate = LocalDateTime.ofInstant(Instant.parse(modifiedDate), ZoneOffset.UTC);
     }
 }

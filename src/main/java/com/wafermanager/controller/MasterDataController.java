@@ -30,24 +30,32 @@ public class MasterDataController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody MasterData masterData) {
         masterDataService.create(masterData);
-        MasterData created = masterDataService.read(masterData.getUid());
-        return ResponseEntity.created(location(created)).build();
+        return ResponseEntity.created(location(masterData)).build();
     }
 
     @GetMapping("/{uid}")
     public ResponseEntity<MasterData> read(@PathVariable String uid) {
-        return ResponseEntity.ok(masterDataService.read(uid));
+        MasterData masterData = masterDataService.read(uid);
+        if (masterData != null) {
+            return ResponseEntity.ok(masterData);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody MasterData masterData) {
-        masterDataService.update(masterData);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).location(location(masterData)).build();
+        if (masterDataService.update(masterData) == 1) {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).location(location(masterData)).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @DeleteMapping("/{uid}")
     public ResponseEntity<?> delete(@PathVariable String uid) {
-        return ResponseEntity.noContent().build();
+        if (masterDataService.delete(uid) == 1) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @GetMapping
