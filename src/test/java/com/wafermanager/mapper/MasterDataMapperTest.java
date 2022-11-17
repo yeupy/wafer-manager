@@ -22,7 +22,7 @@ class MasterDataMapperTest extends AbstractTest {
 
     static MasterData[] masterDataArr;
 
-    @BeforeAll
+    /*@BeforeAll
     static void beforeAll() {
         masterDataArr = new MasterData[10];
     }
@@ -99,5 +99,5 @@ class MasterDataMapperTest extends AbstractTest {
     void count() {
         assertEquals(10, masters.count(null));
         assertEquals(1, masters.count("0"));
-    }
+    }*/
 }

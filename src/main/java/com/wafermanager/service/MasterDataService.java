@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 
 @Slf4j
 @Service
@@ -86,20 +85,22 @@ public class MasterDataService {
             result += masters.create(_masterData);
             line = reader.readLine();
         }*/
+        LocalDateTime modifiedDate = LocalDateTime.now(ZoneId.of("UTC"));
+
         for (int i = 0, l = size; i < l; i++) {
-            String uid = randomUid(4);
+            String uid = randomUid(6);
             uids.add(uid);
             while (!uids.contains(uid)) {
-                uid = randomUid(4);
+                uid = randomUid(6);
             }
 
             int a = Double.valueOf(Math.floor(Math.random() * ((i * 0.8) - i)) + i).intValue();
             int b = Double.valueOf(Math.floor(Math.random() * ((i * 0.5) - i)) + i).intValue();
             int c = Double.valueOf(Math.floor(Math.random() * 500)).intValue();
             String d = randomUid(2);
-            LocalDateTime modifiedDate = LocalDateTime.now(ZoneId.of("UTC"));
+//            modifiedDate = LocalDateTime.now(ZoneId.of("UTC"));
 
-            MasterData _masterData = new MasterData(uid, a, b, c, d, modifiedDate);
+            MasterData _masterData = new MasterData(uid, a, b, c, d, modifiedDate.minusDays(i % 60));
             masters.create(_masterData);
             log.info(_masterData.toString());
         }

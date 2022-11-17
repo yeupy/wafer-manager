@@ -20,9 +20,10 @@ public class MasterDataController {
     private final MasterDataService masterDataService;
 
     private URI location(MasterData masterData) {
+        String uid = masterData != null ? masterData.getUid() : "";
         return ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/" + masterData.getUid())
+                .fromCurrentContextPath()
+                .path("/master/" + uid)
                 .buildAndExpand()
                 .toUri();
     }
@@ -31,6 +32,7 @@ public class MasterDataController {
     public ResponseEntity<?> create(@RequestBody MasterData masterData) {
         masterDataService.create(masterData);
         return ResponseEntity.created(location(masterData)).build();
+//        return ResponseEntity.ok("CREATED");
     }
 
     @GetMapping("/{uid}")
@@ -39,15 +41,15 @@ public class MasterDataController {
         if (masterData != null) {
             return ResponseEntity.ok(masterData);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody MasterData masterData) {
         if (masterDataService.update(masterData) == 1) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).location(location(masterData)).build();
+            return ResponseEntity.accepted().location(location(masterData)).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{uid}")
@@ -55,7 +57,7 @@ public class MasterDataController {
         if (masterDataService.delete(uid) == 1) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping()
@@ -65,7 +67,7 @@ public class MasterDataController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MasterData>> list(@RequestParam(value = "uid", required = false) String uid, @RequestParam("size") int size, @RequestParam("page") int page) {
+    public ResponseEntity<List<MasterData>> list(@RequestParam(value = "uid", required = false) String uid, @RequestParam(value = "size", required = false, defaultValue = "5") int size, @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
         return ResponseEntity.ok(masterDataService.list(uid, size, page));
     }
 
@@ -77,6 +79,6 @@ public class MasterDataController {
     @GetMapping("/sample")
     public ResponseEntity<?> sample(@RequestParam("size") int size) throws IOException {
         masterDataService.sample(size);
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        return ResponseEntity.created(location(null)).build();
     }
 }

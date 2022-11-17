@@ -33,7 +33,7 @@ class MasterDataControllerTest extends AbstractControllerTest {
 
     static MasterData[] masterDataArr;
 
-    @BeforeAll
+    /*@BeforeAll
     static void beforeAll() {
         masterDataArr = new MasterData[10];
     }
@@ -129,5 +129,5 @@ class MasterDataControllerTest extends AbstractControllerTest {
                 .param("uid", "0")).andExpect(status().isOk()).andReturn();
         res = convert(result, new TypeReference<Long>() {});
         assertEquals(1, res);
-    }
+    }*/
 }

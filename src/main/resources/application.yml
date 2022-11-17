@@ -3,18 +3,18 @@ spring:
     active: prod
   datasource:
 #    initialization-mode: always
-    url: jdbc:mariadb://nas.graenn.net:3306/test
-    username: user
-    password: Mendix2022!
-    driver-class-name: org.mariadb.jdbc.Driver
-    #hikari:
-      #jdbc-url: jdbc:h2:mem:test #
-      #username: sa
-      #password:
-      #driver-class-name: org.h2.Driver
-#  h2:
-#    console:
-#      enabled: true
+#    url: jdbc:mariadb://nas.graenn.net:3306/test
+#    username: user
+#    password: Mendix2022!
+#    driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      jdbc-url: jdbc:h2:mem:test
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
   jackson:
     default-property-inclusion: non_null
 logging:

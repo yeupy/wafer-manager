@@ -6,6 +6,7 @@ import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 @Data
@@ -35,8 +36,6 @@ public class MasterData {
         this.columnB = columnB;
         this.columnC = columnC;
         this.columnD = columnD;
-//        this.modifiedDate = LocalDateTime.parse(modifiedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-//        this.modifiedDate = LocalDateTime.ofInstant(Instant.parse(modifiedDate), ZoneOffset.UTC);
-        this.modifiedDate = LocalDateTime.parse(modifiedDate, DateTimeFormatter.ISO_DATE_TIME);
+        this.modifiedDate = modifiedDate == null ? LocalDateTime.now(ZoneId.of("UTC")) : LocalDateTime.parse(modifiedDate, DateTimeFormatter.ISO_DATE_TIME);
     }
 }

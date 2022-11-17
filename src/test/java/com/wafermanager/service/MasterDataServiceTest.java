@@ -26,7 +26,7 @@ class MasterDataServiceTest extends AbstractTest {
 
     static MasterData[] masterDataArr;
 
-    @BeforeAll
+    /*@BeforeAll
     static void beforeAll() {
         masterDataArr = new MasterData[10];
     }
@@ -103,5 +103,5 @@ class MasterDataServiceTest extends AbstractTest {
     void count() {
         assertEquals(10, masterDataService.count(null));
         assertEquals(1, masterDataService.count("0"));
-    }
+    }*/
 }
