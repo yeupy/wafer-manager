@@ -67,8 +67,8 @@ public class MasterDataController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MasterData>> list(@RequestParam(value = "uid", required = false) String uid, @RequestParam(value = "size", required = false, defaultValue = "5") int size, @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
-        return ResponseEntity.ok(masterDataService.list(uid, size, page));
+    public ResponseEntity<List<MasterData>> list(@RequestParam(value = "uid", required = false) String uid, @RequestParam(value = "size", required = false, defaultValue = "5") int size, @RequestParam(value = "offset", required = false, defaultValue = "0") int offset) {
+        return ResponseEntity.ok(masterDataService.list(uid, size, offset));
     }
 
     @GetMapping("/count")

@@ -45,8 +45,8 @@ public class MasterDataService {
         return masters.deleteList(uids);
     }
 
-    public List<MasterData> list(String uid, int size, int page) {
-        return masters.list(uid, size, page);
+    public List<MasterData> list(String uid, int size, int offset) {
+        return masters.list(uid, size, offset);
     }
 
     public long count(String uid) {

@@ -23,7 +23,7 @@ public interface MasterDataMapper {
     @Delete("DELETE FROM master where uid = #{uid}")
     int delete(String uid);
 
-    List<MasterData> list(String uid, int size, int page);
+    List<MasterData> list(String uid, int size, int offset);
 
     long count(String uid);
 

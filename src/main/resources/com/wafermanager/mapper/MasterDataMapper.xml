@@ -45,7 +45,7 @@
             <if test="uid != null and uid != ''">uid like concat(#{uid},'%')</if>
         </where>
         ORDER BY modified_date DESC
-        LIMIT #{size} OFFSET ${size * page}
+        LIMIT #{size} OFFSET #{offset}
     </select>
 
     <select id="count" resultType="_long">
