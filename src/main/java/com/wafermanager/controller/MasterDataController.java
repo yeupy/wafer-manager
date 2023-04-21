@@ -32,6 +32,7 @@ public class MasterDataController {
     public ResponseEntity<?> create(@RequestBody MasterData masterData) {
         masterDataService.create(masterData);
         return ResponseEntity.created(location(masterData)).build();
+//        return ResponseEntity.ok("CREATED");
     }
 
     @GetMapping("/{uid}")
