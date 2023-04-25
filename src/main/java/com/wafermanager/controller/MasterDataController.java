@@ -81,4 +81,14 @@ public class MasterDataController {
         masterDataService.sample(size);
         return ResponseEntity.created(location(null)).build();
     }
+
+    @GetMapping("/badRequest")
+    public ResponseEntity<?> badRequest() {
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/serverError")
+    public ResponseEntity<?> serverError() {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
 }
