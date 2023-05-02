@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -52,18 +53,18 @@ public class MasterDataController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{uid}")
-    public ResponseEntity<?> delete(@PathVariable String uid) {
-        if (masterDataService.delete(uid) == 1) {
+    @DeleteMapping
+    public ResponseEntity<?> delete(@RequestHeader(value = "Uid") String uid) {
+        if(uid.contains(",")) {
+            String[] uids = uid.split(",");
+            masterDataService.deleteList(Arrays.asList(uids));
             return ResponseEntity.noContent().build();
+        } else {
+            if (masterDataService.delete(uid) == 1) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping()
-    public ResponseEntity<?> deleteList(@RequestBody List<String> uids) {
-        masterDataService.deleteList(uids);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
@@ -77,7 +78,7 @@ public class MasterDataController {
     }
 
     @GetMapping("/sample")
-    public ResponseEntity<?> sample(@RequestParam("size") int size) throws IOException {
+    public ResponseEntity<?> sample(@RequestParam("size") int size) {
         masterDataService.sample(size);
         return ResponseEntity.created(location(null)).build();
     }

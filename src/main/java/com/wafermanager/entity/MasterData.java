@@ -36,6 +36,6 @@ public class MasterData {
         this.columnB = columnB;
         this.columnC = columnC;
         this.columnD = columnD;
-        this.modifiedDate = modifiedDate == null ? LocalDateTime.now(ZoneId.of("UTC")) : LocalDateTime.parse(modifiedDate, DateTimeFormatter.ISO_DATE_TIME);
+        this.modifiedDate = modifiedDate == null ? LocalDateTime.now(ZoneId.of("UTC")) : LocalDateTime.parse(modifiedDate.replaceFirst(" ", "T"), DateTimeFormatter.ISO_DATE_TIME);
     }
 }

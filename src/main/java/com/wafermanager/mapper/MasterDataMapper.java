@@ -20,7 +20,7 @@ public interface MasterDataMapper {
 
     int deleteList(List<String> uids);
 
-    @Delete("DELETE FROM master where uid = #{uid}")
+//    @Delete("DELETE FROM master where uid = #{uid}")
     int delete(String uid);
 
     List<MasterData> list(String uid, int size, int offset);

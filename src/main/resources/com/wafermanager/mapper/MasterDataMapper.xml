@@ -28,6 +28,11 @@
         WHERE uid = #{uid}
     </update>
 
+    <delete id="delete" parameterType="string">
+        DELETE from master
+        WHERE uid = #{uid}
+    </delete>
+
     <delete id="deleteList" parameterType="list">
         DELETE from master
         <where>
