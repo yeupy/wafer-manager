@@ -26,4 +26,4 @@ REST API and unit testing example using springboot + mybatis + h2
 
 ..\wafer-manager> gradlew bootRun
 
-Server URL -> http://localhost:8080/
+Server URL -> http://localhost:8081/
