@@ -2,7 +2,7 @@ server:
   port: 8081
 spring:
   profiles:
-    active: prod
+    active: init
   datasource:
 #    initialization-mode: always
 #    url: jdbc:mariadb://nas.graenn.net:3306/test

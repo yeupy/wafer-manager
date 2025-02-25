@@ -31,7 +31,11 @@ public class MasterDataController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody MasterData masterData) {
-        masterDataService.create(masterData);
+        try {
+            masterDataService.create(masterData);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Already exists.");
+        }
         return ResponseEntity.created(location(masterData)).build();
 //        return ResponseEntity.ok("CREATED");
     }
@@ -55,16 +59,11 @@ public class MasterDataController {
 
     @DeleteMapping
     public ResponseEntity<?> delete(@RequestHeader(value = "Uid") String uid) {
-        if(uid.contains(",")) {
-            String[] uids = uid.split(",");
-            masterDataService.deleteList(Arrays.asList(uids));
-            return ResponseEntity.noContent().build();
-        } else {
-            if (masterDataService.delete(uid) == 1) {
-                return ResponseEntity.noContent().build();
-            }
+        String[] uids = uid.split(",");
+        if(masterDataService.deleteList(Arrays.asList(uids)) == 0) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
@@ -80,7 +79,7 @@ public class MasterDataController {
     @GetMapping("/sample")
     public ResponseEntity<?> sample(@RequestParam("size") int size) {
         masterDataService.sample(size);
-        return ResponseEntity.created(location(null)).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/badRequest")
